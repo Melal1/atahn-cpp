@@ -1,2 +1,4 @@
 .direnv
 build/debug
+.cache/clangd/index
+build/release

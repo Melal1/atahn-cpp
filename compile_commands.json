@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/nix/store/hb2bs5fg5wkm04x565737qd5nh2hy5nk-gcc-wrapper-15.2.0/bin/g++",
+      "-std=c++23",
+      "-g",
+      "-O0",
+      "-c",
+      "-o",
+      "build/debug/src__main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/melal/Dev/projects/cpp/athan",
+    "file": "/home/melal/Dev/projects/cpp/athan/src/main.cpp",
+    "output": "/home/melal/Dev/projects/cpp/athan/build/debug/src__main.o"
+  }
+]

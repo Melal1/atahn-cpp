@@ -24,3 +24,14 @@ $(BUILD_OUT)/src__main: $(BUILD_OUT)/src__main.o
 run_src__main: $(BUILD_OUT)/src__main
 	$(BUILD_OUT)/src__main
 # marker_end: ./src/main.cpp
+# marker_start: ./src/test.cpp type:full
+$(BUILD_OUT)/src__test.o: ./src/test.cpp
+	$(CXX) $(CXXFLAGS)  -c $< -o $@
+
+$(BUILD_OUT)/src__test: LINKS += -lfmt
+$(BUILD_OUT)/src__test: $(BUILD_OUT)/src__test.o
+	$(CXX) $^ -o $@ $(LINKS)
+
+run_src__test: $(BUILD_OUT)/src__test
+	$(BUILD_OUT)/src__test
+# marker_end: ./src/test.cpp

@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Basel Saramijou (github:melal1)
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 #pragma once
 #include "core.h"
 #include "string_utils.h"
@@ -11,7 +14,7 @@ template <class T> AD_inline constexpr bool range(T min, T max, T value) noexcep
 }
 
 void num_to_words(size_t nume, static_str_base &buffer) noexcept;
-}
+} // namespace util
 
 namespace __detail
 {

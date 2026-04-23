@@ -1,7 +1,10 @@
+// Copyright (c) 2026 Basel Saramijou (github:melal1)
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 #pragma once
 #include <array>
 #include <charconv>
-#include <chrono>
 #include <cstddef>
 #include <ctime>
 #include <expected>
@@ -17,8 +20,6 @@
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
-
-
 
 constexpr const char *cache_file = "/tmp/athan_cache.json";
 
@@ -128,13 +129,13 @@ public:
     std::time_t t = std::time(nullptr);
     std::tm tm_now;
     localtime_r(&t, &tm_now);
-    
+
     u32 now_sec = tm_now.tm_hour * 3600 + tm_now.tm_min * 60 + tm_now.tm_sec;
-    
+
     auto next = get_next_prayer();
     u32 next_sec = next.time.hour * 3600 + next.time.min * 60;
-    
-    if (next_sec <= now_sec) 
+
+    if (next_sec <= now_sec)
     {
       // It's Fajr of the next day
       return (86400LL - now_sec) + next_sec;

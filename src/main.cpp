@@ -1,3 +1,7 @@
+// Copyright (c) 2026 Basel Saramijou (github:melal1)
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 #include "../include/salawat.h"
 #include <chrono>
 #include <string_view>

@@ -1,7 +1,9 @@
 #pragma once
 #include <array>
 #include <charconv>
+#include <chrono>
 #include <cstddef>
+#include <ctime>
 #include <expected>
 #include <fstream>
 #include <type_traits>
@@ -16,23 +18,7 @@
 
 using json = nlohmann::json;
 
-struct Time
-{
-  u16 hour = 0;
-  u16 min = 0;
 
-  constexpr Time() = default;
-
-  constexpr Time(u16 h, u16 m) : hour(h), min(m)
-  {
-  }
-
-  void set(u16 h, u16 m)
-  {
-    hour = h;
-    min = m;
-  }
-};
 
 constexpr const char *cache_file = "/tmp/athan_cache.json";
 
@@ -60,6 +46,12 @@ public:
     loaded_from_file,
     loaded_form_net,
     err
+  };
+
+  struct NextPrayer
+  {
+    const char *name;
+    Time time;
   };
 
   Salawat(const char *country, const char *city, CalculationMethod method)
@@ -110,6 +102,44 @@ public:
     {
       FMT_TYPE::println("{:<8} : {:02}:{:02}", labels[i], _prayer_times[i].hour, _prayer_times[i].min);
     }
+  }
+
+  NextPrayer get_next_prayer() const noexcept
+  {
+    std::time_t t = std::time(nullptr);
+    std::tm tm_now;
+    localtime_r(&t, &tm_now);
+    u32 now_min = tm_now.tm_hour * 60 + tm_now.tm_min;
+
+    static constexpr std::array labels{"Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"};
+
+    for (size_t i = 0; i < 5; ++i)
+    {
+      if (_prayer_times[i].to_min() > now_min)
+      {
+        return {labels[i], _prayer_times[i]};
+      }
+    }
+    return {labels[0], _prayer_times[0]};
+  }
+
+  i64 seconds_until_next() const noexcept
+  {
+    std::time_t t = std::time(nullptr);
+    std::tm tm_now;
+    localtime_r(&t, &tm_now);
+    
+    u32 now_sec = tm_now.tm_hour * 3600 + tm_now.tm_min * 60 + tm_now.tm_sec;
+    
+    auto next = get_next_prayer();
+    u32 next_sec = next.time.hour * 3600 + next.time.min * 60;
+    
+    if (next_sec <= now_sec) 
+    {
+      // It's Fajr of the next day
+      return (86400LL - now_sec) + next_sec;
+    }
+    return static_cast<i64>(next_sec) - now_sec;
   }
 
   void set_country(str country) noexcept

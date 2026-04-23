@@ -2,17 +2,14 @@
 # group: https -lssl -lcrypto
 # link: -lfmt
 # links_end
-
-BUILD_MODE = debug
-DEBUGFLAGS = -std=c++23 -g -O0
-BUILD_OUT = $(BUILD_DIR)/$(BUILD_MODE)
 BUILD_DIR = build
+DEBUGFLAGS = -std=c++23 -g -O0 -Wall -Wextra -Wpedantic
+RELEASEFLAGS = -std=c++23 -O3 -DNDEBUG -ffast-math -flto=auto -Wall -Wextra -Wpedantic
+BUILD_OUT = $(BUILD_DIR)/$(BUILD_MODE)
+CXXFLAGS = $(RELEASEFLAGS)
 CXX = g++
-CXXFLAGS = $(DEBUGFLAGS)
-RELEASEFLAGS = -std=c++23 -O3 -DNDEBUG -ffast-math -flto
+BUILD_MODE = release
 $(shell mkdir -p $(BUILD_OUT))
-
-
 # marker_start: ./src/main.cpp type:full
 $(BUILD_OUT)/src__main.o: ./src/main.cpp
 	$(CXX) $(CXXFLAGS)  -c $< -o $@
